@@ -1,0 +1,4 @@
+5g_GUI/node_modules/
+5g_GUI/.env
+*.log
+*.pem
