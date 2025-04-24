@@ -26,8 +26,11 @@ const AppPort = vmConfig.app_port;
 
 // Middleware
 app.use(cors({
-    origin: [`http://localhost:${AppPort}`,`http://${sshhost}:${AppPort}`], // Allow requests from your React app
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
+  origin: [
+    `http://localhost:${AppPort}`,
+    `http://${sshhost}:${AppPort}`
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
 
 app.use(bodyParser.json()); // Parse incoming request bodies
@@ -43,23 +46,11 @@ const privateKey = fs.readFileSync(vmConfig.privateKeyPath, 'utf8');
 
 app.post('/git-clone', (req, res) => {
     const conn = new Client();
-    const privateKeyPath = vmConfig.privateKeyPath;
-
-    // Check if the private key is being read correctly
-    let privateKey;
-    try {
-        privateKey = fs.readFileSync(privateKeyPath, 'utf8');
-        console.log(`Private Key loaded successfully from: ${privateKeyPath}`);
-    } catch (err) {
-        console.error(`Error reading private key: ${err.message}`);
-        return res.status(500).send({ message: `Error reading private key: ${err.message}` });
-    }
 
     conn.on('ready', () => {
         console.log('SSH Connection Established.');
-	
-        
-	const repoUrl = 'https://${process.env.GITHUB_TOKEN}@github.com/b-yond-infinite-network/laas-5gsa-k8s.git';
+
+        const repoUrl = 'https://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@github.com/b-yond-infinite-network/laas-5gsa-k8s.git';
         const targetDirectory = 'laas-5gsa-k8s';
         const command = `
             rm -rf ${targetDirectory} &&
@@ -104,15 +95,18 @@ app.post('/git-clone', (req, res) => {
         res.status(500).send({ message: `SSH Connection Error: ${err.message}` });
     });
 
-    // Establish SSH connection with the correct private key usage
+
+
+
     conn.connect({
         host: vmConfig.host,
         port: vmConfig.port,
         username: vmConfig.username,
-        privateKey: privateKey, // Corrected key loading
-        debug: (info) => console.log('SSH Debug:', info), // Enable SSH debugging
+        privateKey
     });
 });
+
+
 
 // Helper function to list folders
 const listFolders = (conn, callback) => {
@@ -733,10 +727,6 @@ app.get('/download/:fileName', (req, res) => {
 });
 
 
-// Root route to indicate the server is running
-app.get('/', (req, res) => {
-    res.send('Backend Server is Running');
-});
 
 
 
