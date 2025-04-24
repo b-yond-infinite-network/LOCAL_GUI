@@ -19,10 +19,13 @@ sudo npm install -g pm2
 
 # Step 2: Generate SSH key (no passphrase)
 echo -e "\nGenerating SSH key..."
-ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+if [ ! -f ~/.ssh/id_rsa ]; then
+    ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N ""
+fi
 
 # Step 3: Enable key-based auth for localhost
 echo -e "\nConfiguring SSH for localhost access..."
+cat ~/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys > /dev/null
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 chmod 700 ~/.ssh
@@ -32,8 +35,8 @@ sudo systemctl start ssh
 # Step 4: Configure PostgreSQL
 echo -e "\nSetting up PostgreSQL user and database..."
 sudo -u postgres psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = 'anthony') THEN CREATE USER anthony WITH PASSWORD 'LaaS_GUI_2024'; END IF; END \$\$;"
-sudo -u postgres psql -c "SELECT 'CREATE DATABASE laas_gui WITH OWNER anthony' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'laas_gui')\gexec"
-sudo sed -i 's/#port = 5432/port = 8080/' /etc/postgresql/*/main/postgresql.conf
+sudo -u postgres psql -c "SELECT 'CREATE DATABASE laas_gui WITH OWNER anthony' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'laas_gui')\\gexec"
+sudo sed -i 's/^#port = 5432/port = 8080/' /etc/postgresql/*/main/postgresql.conf
 echo "host    all             all             127.0.0.1/32            md5" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
 sudo systemctl restart postgresql
 
