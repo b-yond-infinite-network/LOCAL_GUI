@@ -1,0 +1,12 @@
+/* components/Layout/Layout.css */
+.layout {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  main {
+    flex-grow: 1;
+    padding: 1rem;
+    /* Add any additional styles for the main content area */
+  }
+  

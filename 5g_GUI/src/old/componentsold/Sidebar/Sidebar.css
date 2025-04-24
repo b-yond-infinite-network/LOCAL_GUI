@@ -1,0 +1,43 @@
+.sidenav {
+    height: calc(100vh );
+    width: 220px; /* Fixed width for the sidebar */
+    position: fixed; /* Keep the sidebar fixed on the left */
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #F40085;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.logo-container {
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+    .logo-container img {
+        height: 60px;
+        width: 160px;
+    }
+
+.sidebar-link {
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #e7e7e7;
+    display: block;
+}
+
+    .sidebar-link:hover {
+        color: #8d8b8b;
+    }
+
+.with-arrow {
+    position: relative;
+}
+
+.sidebar-arrow {
+    position: absolute;
+    right: 10px;
+    font-size: 16px;
+}
