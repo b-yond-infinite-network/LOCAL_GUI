@@ -57,8 +57,9 @@ app.post('/git-clone', (req, res) => {
 
     conn.on('ready', () => {
         console.log('SSH Connection Established.');
-
-        const repoUrl = 'https://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@github.com/b-yond-infinite-network/laas-5gsa-k8s.git';
+	
+        
+	const repoUrl = 'https://${process.env.GITHUB_TOKEN}@github.com/b-yond-infinite-network/laas-5gsa-k8s.git';
         const targetDirectory = 'laas-5gsa-k8s';
         const command = `
             rm -rf ${targetDirectory} &&
