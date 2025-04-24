@@ -1,3 +1,31 @@
+# Ignore environment files
+.env
+
+# Ignore system files
+.DS_Store
+
+# Node modules (frontend/backend)
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# PM2 runtime files
+.pids
+.pm2/
+
+# Build files
+dist/
+build/
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# OS generated files
+Thumbs.db
 5g_GUI/node_modules/
 5g_GUI/.env
 *.log
