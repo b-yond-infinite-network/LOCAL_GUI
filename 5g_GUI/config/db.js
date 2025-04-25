@@ -8,7 +8,7 @@ const connectDB = async () => {
         user: 'anthony',      // Your PostgreSQL user
         database: 'laas_gui', // Your database name
         password: 'LaaS_GUI_2024', // Your PostgreSQL password
-        port: 8080,
+        port: 5432,
     });
 
     try {
