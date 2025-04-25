@@ -11,13 +11,14 @@ Before you begin, make sure you have:
 
 - A VirtualBox VM running Ubuntu 22.04 LTS
 - Port forwarding set up in your VM's network config:
+![image](https://github.com/user-attachments/assets/9ae0be13-8440-4a31-888d-6eadd1a09746)
 
 | Guest Port | Host Port | Purpose           |
 |------------|-----------|-------------------|
 | 22         | 2222      | SSH access        |
 | 8200       | 8200      | Frontend (React)  |
 | 8500       | 8500      | Backend API       |
-| 8080       | 8080      | PostgreSQL        |
+      |
 
 ---
 
@@ -90,7 +91,7 @@ Ensure PostgreSQL is listening on port 8080
 Check that your .env or vmConfig.js points to:
 
 host: 127.0.0.1
-port: 8080
+port: 5432
 
 📬 Need Help?
 If anything breaks, feel free to:
