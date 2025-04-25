@@ -43,14 +43,17 @@ const privateKey = fs.readFileSync(vmConfig.privateKeyPath, 'utf8');
 
 
 
-
 app.post('/git-clone', (req, res) => {
-    const conn = new Client();
+    const { token } = req.body;
+    if (!token) {
+        return res.status(400).send({ success: false, message: 'GitHub token is required.' });
+    }
 
+    const conn = new Client();
     conn.on('ready', () => {
         console.log('SSH Connection Established.');
 
-        const repoUrl = 'https://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@github.com/b-yond-infinite-network/laas-5gsa-k8s.git';
+        const repoUrl = `https://${token}@github.com/b-yond-infinite-network/laas-5gsa-k8s.git`;
         const targetDirectory = 'laas-5gsa-k8s';
         const command = `
             rm -rf ${targetDirectory} &&
@@ -66,21 +69,11 @@ app.post('/git-clone', (req, res) => {
             }
 
             let output = '', errorOutput = '';
-
-            stream.on('data', (data) => {
-                console.log(data.toString());
-                output += data.toString();
-            });
-
-            stream.stderr.on('data', (data) => {
-                console.error(data.toString());
-                errorOutput += data.toString();
-            });
+            stream.on('data', (data) => { output += data.toString(); });
+            stream.stderr.on('data', (data) => { errorOutput += data.toString(); });
 
             stream.on('close', (code) => {
-                console.log(`Git clone completed with exit code: ${code}`);
                 conn.end();
-
                 if (code === 0) {
                     res.status(200).send({ success: true, message: 'Repository cloned successfully.', output });
                 } else {
@@ -95,9 +88,6 @@ app.post('/git-clone', (req, res) => {
         res.status(500).send({ message: `SSH Connection Error: ${err.message}` });
     });
 
-
-
-
     conn.connect({
         host: vmConfig.host,
         port: vmConfig.port,
@@ -105,6 +95,7 @@ app.post('/git-clone', (req, res) => {
         privateKey
     });
 });
+
 
 
 
