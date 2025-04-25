@@ -11,16 +11,11 @@ Before you begin, make sure you have:
 
 - A VirtualBox VM running Ubuntu 22.04 LTS
 - Port forwarding set up in your VM's network config:
+
+  
 ![image](https://github.com/user-attachments/assets/9ae0be13-8440-4a31-888d-6eadd1a09746)
 
-| Guest Port | Host Port | Purpose           |
-|------------|-----------|-------------------|
-| 22         | 2222      | SSH access        |
-| 8200       | 8200      | Frontend (React)  |
-| 8500       | 8500      | Backend API       |
-      |
 
----
 
 ## 📥 How to Install
 
