@@ -34,13 +34,17 @@ chmod 700 ~/.ssh
 sudo systemctl enable ssh
 sudo systemctl start ssh
 
-# Step 4: Configure PostgreSQL
+# Step 4: Configure PostgreSQL (default port 5432)
 echo -e "\n🗄️ Configuring PostgreSQL..."
+
+# Create user if not exists
 sudo -u postgres psql -c "DO \$\$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'anthony') THEN CREATE USER anthony WITH PASSWORD 'LaaS_GUI_2024'; END IF; END \$\$;"
+
+# Create database if not exists
 sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'laas_gui'" | grep -q 1 || \
 sudo -u postgres psql -c "CREATE DATABASE laas_gui OWNER anthony;"
 
-# Allow local password authentication
+# Enable access
 echo "host    all             all             127.0.0.1/32            md5" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
 sudo systemctl restart postgresql
 
